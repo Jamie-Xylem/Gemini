@@ -7,16 +7,12 @@
 
 <style>
   :root {
-    --bg-deep: #050713;
-    --bg-main: #0b1020;
     --bg-card: rgba(18, 22, 40, 0.9);
-    --border-soft: rgba(155, 108, 255, 0.4);
-    --accent-purple: #9b6cff;
-    --accent-purple-soft: #e2d9ff;
-    --accent-blue: #6c4dff;
+    --border-soft: rgba(255, 255, 255, 0.4);
+    --accent-light: #ffe6f7;
     --text-main: #ffffff;
-    --text-soft: #cfc9e8;
-    --text-muted: #8a86a8;
+    --text-soft: #f2e9ff;
+    --text-muted: #d9c7ff;
   }
 
   * {
@@ -29,36 +25,60 @@
     min-height: 100vh;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     color: var(--text-main);
-    background:
-      radial-gradient(circle at top, #1a1f2e 0%, #0b1020 45%, #050713 100%);
+    background: linear-gradient(120deg, #ff4d6d, #ffb84d, #ff4df2, #9b6cff, #6c4dff);
+    background-size: 600% 600%;
+    animation: bgShift 18s ease infinite;
     overflow-x: hidden;
   }
 
-  /* Spinning Gemini-style logo background (inline SVG so it ALWAYS loads) */
-  .bg-logo-wrapper {
-    position: fixed;
-    inset: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.14;
+  @keyframes bgShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
   }
 
+  /* Spinning logo */
   .bg-logo {
+    position: fixed;
     width: 520px;
     height: 520px;
+    opacity: 0.16;
     animation: spinLogo 40s linear infinite;
-    filter: drop-shadow(0 0 40px rgba(155, 108, 255, 0.7));
+    filter: drop-shadow(0 0 40px rgba(255, 255, 255, 0.6));
+    z-index: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
   }
 
   @keyframes spinLogo {
-    from { transform: rotate(0deg) scale(1); }
-    to { transform: rotate(360deg) scale(1); }
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
   }
 
-  /* Layout */
+  /* Floating particles */
+  .particles {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .particles span {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(255,255,255,0.6);
+    border-radius: 50%;
+    animation: floatUp 12s linear infinite;
+  }
+
+  @keyframes floatUp {
+    from { transform: translateY(0); opacity: 1; }
+    to { transform: translateY(-120vh); opacity: 0; }
+  }
+
   .page {
     position: relative;
     z-index: 5;
@@ -73,12 +93,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-    background: linear-gradient(
-      to bottom,
-      rgba(5, 7, 19, 0.9),
-      rgba(5, 7, 19, 0.6)
-    );
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(5, 7, 19, 0.7);
   }
 
   .brand {
@@ -91,8 +107,8 @@
     width: 32px;
     height: 32px;
     border-radius: 999px;
-    background: radial-gradient(circle at 30% 30%, #e2d9ff 0%, #9b6cff 40%, #1a1f2e 100%);
-    box-shadow: 0 0 18px rgba(155, 108, 255, 0.8);
+    background: radial-gradient(circle at 30% 30%, #ffe6f7 0%, #ff4df2 40%, #1a1f2e 100%);
+    box-shadow: 0 0 18px rgba(255, 255, 255, 0.8);
   }
 
   .brand-text {
@@ -100,7 +116,7 @@
     font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--accent-purple-soft);
+    color: var(--accent-light);
   }
 
   nav {
@@ -123,7 +139,7 @@
     bottom: 0;
     width: 0;
     height: 2px;
-    background: var(--accent-purple);
+    background: var(--accent-light);
     transition: width 0.25s ease;
   }
 
@@ -134,13 +150,12 @@
   .pill {
     padding: 6px 12px;
     border-radius: 999px;
-    border: 1px solid rgba(155, 108, 255, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.6);
     font-size: 12px;
-    color: var(--accent-purple-soft);
+    color: var(--accent-light);
     background: rgba(18, 22, 40, 0.7);
   }
 
-  /* Hero */
   .hero {
     padding: 40px 32px 24px;
     display: grid;
@@ -157,8 +172,8 @@
   .hero-main-title {
     font-size: clamp(28px, 4vw, 36px);
     font-weight: 700;
-    color: var(--accent-purple-soft);
-    text-shadow: 0 0 18px rgba(155, 108, 255, 0.7);
+    color: var(--accent-light);
+    text-shadow: 0 0 18px rgba(255, 255, 255, 0.9);
     margin-bottom: 10px;
   }
 
@@ -183,39 +198,33 @@
     margin-bottom: 24px;
   }
 
-  .btn-primary {
-    padding: 10px 18px;
-    border-radius: 999px;
-    border: none;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--bg-main);
-    background: linear-gradient(135deg, #e2d9ff, #9b6cff);
-    box-shadow: 0 0 18px rgba(155, 108, 255, 0.7);
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-  }
-
-  .btn-primary:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 0 24px rgba(155, 108, 255, 0.9);
-  }
-
+  .btn-primary,
   .btn-secondary {
     padding: 10px 18px;
     border-radius: 999px;
-    border: 1px solid rgba(155, 108, 255, 0.4);
     cursor: pointer;
     font-size: 14px;
     font-weight: 500;
-    color: var(--accent-purple-soft);
-    background: rgba(18, 22, 40, 0.8);
-    transition: background 0.15s ease, border-color 0.15s ease;
+    transition: 0.3s ease;
   }
 
+  .btn-primary {
+    border: none;
+    color: #1a1f2e;
+    background: linear-gradient(135deg, #ffe6f7, #ffb84d);
+    box-shadow: 0 0 18px rgba(255, 255, 255, 0.8);
+  }
+
+  .btn-secondary {
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    color: var(--accent-light);
+    background: rgba(18, 22, 40, 0.8);
+  }
+
+  .btn-primary:hover,
   .btn-secondary:hover {
-    background: rgba(18, 22, 40, 1);
-    border-color: rgba(226, 217, 255, 0.7);
+    box-shadow: 0 0 24px rgba(255, 255, 255, 0.9);
+    transform: translateY(-2px);
   }
 
   .hero-meta {
@@ -231,16 +240,14 @@
     border-radius: 20px;
     background: var(--bg-card);
     border: 1px solid var(--border-soft);
-    box-shadow: 0 0 40px rgba(108, 77, 255, 0.45);
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
     text-align: center;
-    position: relative;
-    overflow: hidden;
   }
 
   .hero-card-title {
     font-size: 20px;
     font-weight: 600;
-    color: var(--accent-purple-soft);
+    color: var(--accent-light);
     margin-bottom: 10px;
   }
 
@@ -253,17 +260,17 @@
 
   .hero-card-link {
     font-size: 14px;
-    color: var(--accent-purple);
+    color: var(--accent-light);
     text-decoration: none;
-    border-bottom: 1px solid var(--accent-purple);
+    border-bottom: 1px solid var(--accent-light);
     padding-bottom: 2px;
-    transition: color 0.2s ease, border-color 0.2s ease, text-shadow 0.2s ease;
+    transition: 0.2s ease;
   }
 
   .hero-card-link:hover {
-    color: var(--accent-purple-soft);
-    border-color: var(--accent-purple-soft);
-    text-shadow: 0 0 12px rgba(226, 217, 255, 0.8);
+    color: #ffffff;
+    border-color: #ffffff;
+    text-shadow: 0 0 12px rgba(255, 255, 255, 0.8);
   }
 
   .hero-card-footer {
@@ -272,7 +279,6 @@
     color: var(--text-muted);
   }
 
-  /* Sections */
   .section {
     padding: 24px 32px 32px;
   }
@@ -288,7 +294,7 @@
   .section-title {
     font-size: 18px;
     font-weight: 600;
-    color: var(--accent-purple-soft);
+    color: var(--accent-light);
   }
 
   .section-subtitle {
@@ -318,7 +324,7 @@
     padding: 16px 16px 18px;
     border-radius: 16px;
     background: rgba(12, 16, 30, 0.9);
-    border: 1px solid rgba(155, 108, 255, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.5);
   }
 
   .feature-label {
@@ -332,7 +338,7 @@
   .feature-title {
     font-size: 14px;
     font-weight: 600;
-    color: var(--accent-purple-soft);
+    color: var(--accent-light);
     margin-bottom: 6px;
   }
 
@@ -342,7 +348,6 @@
     line-height: 1.5;
   }
 
-  /* FAQ */
   .faq-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -359,13 +364,13 @@
     padding: 14px 16px 16px;
     border-radius: 14px;
     background: rgba(12, 16, 30, 0.9);
-    border: 1px solid rgba(155, 108, 255, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.5);
   }
 
   .faq-q {
     font-size: 13px;
     font-weight: 600;
-    color: var(--accent-purple-soft);
+    color: var(--accent-light);
     margin-bottom: 6px;
   }
 
@@ -375,22 +380,17 @@
     line-height: 1.5;
   }
 
-  /* Footer */
   footer {
     margin-top: auto;
     padding: 18px 32px 22px;
-    border-top: 1px solid rgba(255, 255, 255, 0.04);
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
     font-size: 12px;
     color: var(--text-muted);
     display: flex;
     justify-content: space-between;
     gap: 12px;
     flex-wrap: wrap;
-    background: linear-gradient(
-      to top,
-      rgba(5, 7, 19, 0.9),
-      rgba(5, 7, 19, 0.6)
-    );
+    background: rgba(5, 7, 19, 0.7);
   }
 
   .footer-left {
@@ -407,43 +407,47 @@
   }
 
   .footer-link {
-    color: var(--accent-purple);
+    color: var(--accent-light);
     text-decoration: none;
     border-bottom: 1px solid transparent;
     padding-bottom: 1px;
-    transition: border-color 0.2s ease, color 0.2s ease;
+    transition: 0.2s ease;
   }
 
   .footer-link:hover {
-    border-color: var(--accent-purple-soft);
-    color: var(--accent-purple-soft);
+    border-color: #ffffff;
+    color: #ffffff;
+  }
+
+  /* Scroll animations */
+  .scroll-section {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .scroll-section.visible {
+    opacity: 1;
+    transform: translateY(0);
   }
 </style>
 </head>
 
 <body>
 
-<!-- Spinning Gemini-style logo background (inline SVG so it ALWAYS loads) -->
-<div class="bg-logo-wrapper">
-  <svg class="bg-logo" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <defs>
-      <radialGradient id="geminiGradient" cx="50%" cy="30%" r="70%">
-        <stop offset="0%" stop-color="#e2d9ff" />
-        <stop offset="35%" stop-color="#9b6cff" />
-        <stop offset="70%" stop-color="#1a1f2e" />
-        <stop offset="100%" stop-color="#050713" />
-      </radialGradient>
-    </defs>
-    <circle cx="256" cy="256" r="220" fill="url(#geminiGradient)" />
-    <circle cx="176" cy="216" r="70" fill="#050713" />
-    <circle cx="336" cy="296" r="70" fill="#050713" />
-    <circle cx="176" cy="216" r="40" fill="#e2d9ff" />
-    <circle cx="336" cy="296" r="40" fill="#e2d9ff" />
-  </svg>
+<!-- Spinning logo using gemini.PNG -->
+<img class="bg-logo" src="gemini.PNG" alt="Gemini Logo">
+
+<!-- Floating particles -->
+<div class="particles">
+  <span style="left:10%; animation-delay:0s;"></span>
+  <span style="left:25%; animation-delay:2s;"></span>
+  <span style="left:40%; animation-delay:4s;"></span>
+  <span style="left:60%; animation-delay:6s;"></span>
+  <span style="left:80%; animation-delay:8s;"></span>
 </div>
 
 <div class="page">
-  <!-- HEADER -->
   <header>
     <div class="brand">
       <div class="brand-logo"></div>
@@ -451,15 +455,15 @@
     </div>
     <nav>
       <a href="#welcome">Welcome</a>
-      <a href="#now">What you can do now</a>
+      <a href="#learn">What you can do</a>
       <a href="#faq">FAQ</a>
       <span class="pill">Assistant online</span>
     </nav>
   </header>
 
-  <!-- HERO -->
   <main>
-    <section class="hero" id="welcome">
+    <!-- HERO -->
+    <section class="hero scroll-section" id="welcome">
       <div>
         <h1 class="hero-main-title">
           Thank you for adding Google AI to your server.
@@ -469,15 +473,14 @@
           confirms that everything is set up and that your assistant is active.
         </p>
         <p class="hero-tagline">
-          You can close this page or keep exploring to see what your new assistant
-          can do.
+          You can close this page or keep exploring to see what your new assistant can do.
         </p>
 
         <div class="hero-actions">
-          <button class="btn-primary">
+          <button class="btn-primary" onclick="window.location.href='https://discord.com/app';">
             Go back to where you came from
           </button>
-          <button class="btn-secondary">
+          <button class="btn-secondary" onclick="document.getElementById('learn').scrollIntoView({ behavior: 'smooth' });">
             Learn what Gemini can do
           </button>
         </div>
@@ -506,7 +509,7 @@
     </section>
 
     <!-- WHAT YOU CAN DO NOW -->
-    <section class="section" id="now">
+    <section class="section scroll-section" id="learn">
       <div class="section-header">
         <div>
           <h2 class="section-title">What you can do now</h2>
@@ -548,11 +551,11 @@
     </section>
 
     <!-- FAQ -->
-    <section class="section" id="faq">
+    <section class="section scroll-section" id="faq">
       <div class="section-header">
         <div>
           <h2 class="section-title">Frequently asked questions</h2>
-          <p class="section-subtitle">
+          <p class="section-sub<p class="section-subtitle">
             A few quick answers about what this page is and what your assistant does.
           </p>
         </div>
@@ -589,7 +592,7 @@
           <div class="faq-a">
             This page was designed as a clean, simple landing screen to welcome
             you to Google AI · Gemini.
-            <br /><br />
+            <br><br>
             <strong>Created by Xylem — All rights reserved.</strong>
           </div>
         </article>
@@ -597,7 +600,6 @@
     </section>
   </main>
 
-  <!-- FOOTER -->
   <footer>
     <div class="footer-left">
       <span>Created by Xylem — All rights reserved.</span>
@@ -614,5 +616,25 @@
   </footer>
 </div>
 
+<script>
+  // Scroll animations: reveal sections when they enter the viewport
+  const sections = document.querySelectorAll('.scroll-section');
+
+  const observer = new IntersectionObserver(
+    entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    },
+    { threshold: 0.15 }
+  );
+
+  sections.forEach(sec => observer.observe(sec));
+</script>
+
 </body>
 </html>
+
+
